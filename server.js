@@ -32,26 +32,6 @@ function start() {
         "Exit",
       ],
     })
-    .then(function (answer) {
-      if (answer.action === "View all departments") {
-        viewDepartments();
-      } else if (answer.action === "View all roles") {
-        viewRoles();
-      } else if (answer.action === "View all employees") {
-        viewEmployees();
-      } else if (answer.action === "Add a department") {
-        addDepartment();
-      } else if (answer.action === "Add a role") {
-        addRole();
-      } else if (answer.action === "Add an employee") {
-        addEmployee();
-      } else if (answer.action === "Update employee role") {
-        updateRole();
-      } else if (answer.action === "Exit") {
-        connection.end();
-      }
-    });
-}
 
 function viewDepartments() {
   var query = "SELECT * FROM department";
@@ -226,20 +206,20 @@ async function addEmployee() {
                   let managerId = filteredManager[0].id;
                   console.log(managerAnswer);
                   let query =
-                    "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+                 "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
                   let values = [
-                    answer.firstName,
-                    answer.lastName,
-                    roleId,
-                    managerId,
+                 answer.firstName,
+                 answer.lastName,
+                 roleId,
+                managerId,
                   ];
-                  console.log(values);
-                  connection.query(query, values, function (err, res, fields) {
-                    console.log(
-                      `You have added this employee: ${values[0].toUpperCase()}.`
-                    );
-                  });
-                  viewEmployees();
+             console.log(values);
+             connection.query(query, values, function (err, res, fields) {
+             console.log(
+           `You have added this employee: ${values[0].toUpperCase()}.`
+             );
+              });
+              viewEmployees();
                 });
               });
           });
@@ -248,41 +228,23 @@ async function addEmployee() {
   });
 }
 
-function updateRole() {
-  connection.query("SELECT * FROM employee", function (err, result) {
-    if (err) throw err;
-    inquirer
-      .prompt([
-        {
-          name: "employeeName",
-          type: "list",
-          message: "Which employee's role is changing?",
-          choices: function () {
-            employeeArray = [];
-            result.forEach((result) => {
-              employeeArray.push(result.last_name);
-            });
-            return employeeArray;
-          },
-        },
-      ])
-      .then(function (answer) {
-        console.log(answer);
-        const name = answer.employeeName;
+     .then(function (answer) {
+       console.log(answer);
+       const name = answer.employeeName;
 
-        connection.query("SELECT * FROM role", function (err, res) {
+    connection.query("SELECT * FROM role", function (err, res) {
           inquirer
-            .prompt([
-              {
-                name: "role",
-                type: "list",
-                message: "What is their new role?",
-                choices: function () {
-                  rolesArray = [];
-                  res.forEach((res) => {
-                    rolesArray.push(res.title);
-                  });
-                  return rolesArray;
+          .prompt([
+           {
+              name: "role",
+            type: "list",
+            message: "What is their new role?",
+            choices: function () {
+            rolesArray = [];
+           res.forEach((res) => {
+           rolesArray.push(res.title);
+      });
+            return rolesArray;
                 },
               },
             ])
@@ -305,7 +267,7 @@ function updateRole() {
                 }
               );
             });
-        });
+        //});
 
         //})
       });
