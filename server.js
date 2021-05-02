@@ -18,7 +18,7 @@ connection.connect(function (err) {
 function start() {
   inquirer
     .prompt({
-      name: "action",
+      title: "action",
       type: "list",
       message: "What would you like to do?",
       choices: [
@@ -93,7 +93,7 @@ function viewEmployees() {
 function addDepartment() {
   inquirer
     .prompt({
-      name: "department",
+      title: "department",
       type: "input",
       message: "What is the name of the new department?",
     })
@@ -256,7 +256,6 @@ function updateRole() {
         {
           name: "employeeName",
           type: "list",
-          // is there a way to make the options here the results of a query that selects all departments?`
           message: "Which employee's role is changing?",
           choices: function () {
             employeeArray = [];
@@ -267,17 +266,10 @@ function updateRole() {
           },
         },
       ])
-      // in order to get the id here, i need a way to grab it from the departments table
       .then(function (answer) {
         console.log(answer);
         const name = answer.employeeName;
-        /*const role = answer.roleName;
-        connection.query('SELECT * FROM role', function(err, res) {
-            if (err) throw (err);
-            let filteredRole = res.filter(function(res) {
-                return res.title == role;
-            })
-        let roleId = filteredRole[0].id;*/
+
         connection.query("SELECT * FROM role", function (err, res) {
           inquirer
             .prompt([
